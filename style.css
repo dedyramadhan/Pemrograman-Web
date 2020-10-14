@@ -1,0 +1,32 @@
+* {
+    padding: 0;
+    margin: 0;
+}
+
+body {
+    margin-left: 300px;
+    margin-right: 300px;
+    background: lightgray;
+    font-family: 'Cousine', monospace;
+    font-size: medium;
+}
+
+h1{
+    font-size: 85px;
+}
+
+h2 {
+    text-decoration: underline;
+}
+
+header {
+    text-align: center;
+}
+
+div {
+    margin-left: 20px;
+}
+
+img {
+    border-radius: 50%;
+}
