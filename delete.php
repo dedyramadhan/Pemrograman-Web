@@ -1,11 +1,13 @@
 <?php
 
-include_once("config.php");
+include_once("conn.php");
 
-$sku = $_GET['sku'];
+$id = $_GET['id'];
 
-$result = mysqli_query($mysqli, "DELETE FROM barang WHERE sku=$sku");
-echo "Barang telah berhasil dihapus. <a href='index.php'>Cek Barang</a>";
+$deleteResult = mysqli_query($connect, "DELETE FROM education WHERE id=".$id);
+echo "Riwayat Pendidikan telah berhasil dihapus.<a href='index.php'>Cek Hasil</a>";
 
 header("Location: index.php");
+
+/**/
 ?>

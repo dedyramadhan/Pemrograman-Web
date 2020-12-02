@@ -1,83 +1,183 @@
-<!DOCTYPE html>
-<?php
-include_once("config.php");
-error_reporting(0);
-$result = mysqli_query($mysqli, "SELECT*FROM barang ORDER BY sku DESC");
-$search_result=mysqli_query($mysqli,$sql);
+<?php 
+$profile = "PROFILE";
+$profile_text = "A programmer who is quite good at games and android. Trying to study the website.";
+$no_hp = "1234 1234 4567";
+$email = "blablabla@gmail.com";
+$alamat = "Jl.Angker";
+$website = "www.blablabla.com";
+
+$expertise = "EXPERTISE";
+$ex1= "Adobe Premiere";
+$ex2= "Microsoft Office";
+$ex3= "Unity";
+
+$nama = "Dedy Ramadhan";
+
+$education= "EDUCATION";
+
+$experience= "EXPERIENCE";
+$exp1 = "Freelancer on Fiverr (2016-2018)";
+$exp2 = "Seller smartphone accessories online(2018-2019)";
+
+include "conn.php";
+
 ?>
 
 <!DOCTYPE html>
-<html>
+<html lang="en">
     <head>
-        <title>Barokah Minimarket</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,500;1,400&display=swap" rel="stylesheet">
+        <script src="jquery_hosted_libraries.js"></script>
+        <link rel="stylesheet" href="style6.css">
+        <link rel="stylesheet" href="960.css">
+        <title>CV with Database</title>
+
     </head>
-
     <body>
-    <a href="add.php">Tambah Barang</a><br/>
-    
 
-        <table width='80%' border=1>
+        <script>
 
-        <tr>
-            <th>SKU</th> <th>Nama Barang</th> <th>Kategori</th> <th>Jumlah Stok</th> <th>Harga Satuan</th> <th>Manajemen Kategori</th>
-        </tr>
-        <?php
+        $(document).ready(function(){
+            $('h2').css('color');
 
-    
-        while($data_barang = mysqli_fetch_array($result)) {
-            echo "<tr>";
-            echo "<td>".$data_barang['sku']."</td>";
-            echo "<td>".$data_barang['nama_barang']."</td>";
-            echo "<td>".$data_barang['kategori']."</td>";
-            echo "<td>".$data_barang['jumlah_stok']."</td>";
-            echo "<td>".$data_barang['harga_satuan']."</td>";
-            echo "<td><a href='edit.php?sku=$data_barang[sku]'>Ubah Kategori</a> | <a href='delete.php?sku=$data_barang[sku]'>Hapus Kategori</a></td></tr>";
-        }
-        ?>
-        </table>
-<!--Form Pencarian-->
-<form action="" method="POST" >
-                <input type="text" name="kata_kunci" placeholder="Pencarian" autocomplete="off">
-                <button type="submit" name="cari">Cari</button>
-            </form>
-<?php
-//pencarian
-if(isset($_POST["cari"])){
-  $barokah = cari($_POST["kata_kunci"]);
-}
+            //event
+            $('h1').click(function(){ 
+                $('ol').css('color','red');
+                $('ul').css('color','blue');
+            });
 
-function cari($kata_kunci){
-  $query = "SELECT * FROM barokah
-               WHERE 
-          sku LIKE '%$kata_kunci%' OR
-          kategori LIKE '%$kata_kunci%'OR
-          nama_barang LIKE '%$kata_kunci%'
-          ";
-  return query($query);
-}
+            $('.grid_4').mouseenter(function(){ 
+                $(this).css('color','black');
+            }); 
 
-?>
-   
-<!-- Form Range-->
-<form action="" method="POST" id="range">
-                <p>Dari Harga : <input type="text" name="harga1">
-                    Sampai Harga : <input type="text" name="harga2">
-                <button type="submit" name="rangeharga">Cari</button>
-                </p>
-            </form>
-<?php
-//Range harga
-if(isset($_POST["rangeharga"])){
-  $barokah = rangeharga($_POST["harga1"], $_POST["harga2"]);
-}
-function rangeharga($harga1,$harga2){
-  $query = "SELECT * FROM barang
-               WHERE harga_satuan
-               BETWEEN $harga1 AND $harga2
-          ";
-  return query($query);
-}
-?>
-    
+            
+            $('.grid_4').mouseleave(function(){ 
+                $(this).css('color','lightgray');
+            });
+
+            $('.grid_8').mouseleave(function(){ 
+                $(this).css('color','#333333');
+            });
+
+        });
+
+
+        </script>
+        <div class="container_12">
+            <div class="grid_4">
+                <header>
+                    <br/>
+                    <img src="Asset/foto_diri.PNG" alt="Dedy Ramadhan" height="150px" width="150px">
+                    <br/>
+                </header>
+        
+                <h3><?php echo $profile ?></h3>
+                <?php
+                    $getdata = mysqli_query($connect, "SELECT * FROM profile order by profile_text desc");
+                    while($a=mysqli_fetch_array($getdata)){
+                ?>
+                <p> <?php echo $a['profile_text'] ?></p>
+                <?php
+                }
+                ?>
+        
+                <div>
+                <?php
+                $getdata = mysqli_query($connect, "SELECT * FROM contact order by email desc");
+                while($a=mysqli_fetch_array($getdata)){
+                ?>
+                    <hr size="1px" color="#D3D3D3"width="250px">
+                    <ol style="list-style-type: none;list-style-position: inside;">
+                        <img src="Asset/2x/baseline_phone_android_white_24dp.png" alt="contact">
+                        <li><?php echo $a['nomor'] ?></li>
+                        <img src="Asset/2x/baseline_mail_white_24dp.png" alt="mail">        
+                        <li><?php echo $a['email'] ?></li>
+                        <img src="Asset/2x/baseline_house_white_24dp.png" alt="Address">
+                        <li><?php echo $a['alamat'] ?></li>
+                        <img src="Asset/2x/baseline_desktop_windows_white_24dp.png" alt="Website">
+                        <li><?php echo $a['website'] ?></li>
+                    </ol>
+                <?php
+                }
+                ?>
+                </div>
+        
+                <br/>
+                <hr size="1px" color="#D3D3D3"width="250px">
+                <h3><?php echo $expertise ?></h3>
+                <br/>
+                    <div>
+                    <?php
+                    $getdata = mysqli_query($connect, "SELECT * FROM expertise order by ex1 desc");
+                    while($a=mysqli_fetch_array($getdata)){
+                    ?>
+                        <ol style="list-style-type: none">
+                            <li><?php echo $a['ex1'] ?></li>
+                            <li><?php echo $a['ex2'] ?></li>
+                            <li><?php echo $a['ex3'] ?></li>
+                        
+                        </ol>
+                        <?php
+                        }
+                        ?>
+                    </div>
+            </div>
+
+            <div class="grid_8">
+                <h1><?php echo $nama ?></h1>
+
+                <h2><?php echo $education?></h2>
+                <hr size="1px" width="590px">
+                <ul style="line-height: 50px;">
+                <?php
+                $getdata = mysqli_query($connect, "SELECT * FROM education order by sd desc");
+            
+                while($pendidikan=mysqli_fetch_array($getdata)){
+                ?>
+                    <?php $pendidikan['id'] ?> <br/>
+                    <?php echo $pendidikan['sd'] ?> <br/>
+                    <?php echo $pendidikan['smp'] ?> <br/>
+                    <?php echo $pendidikan['sma'] ?> <br/>
+                    <?php echo $pendidikan['kuliah'] ?> <br/>
+                <td><a href='delete.php?id=<?php echo $pendidikan['id'];?>'>Delete Education List</a></td></tr>
+                <?php
+                }
+                ?>
+                <br/>
+                <a href="add.php">Add Education</a><br/>
+                </ul>
+
+                <script>
+                    function hapustData(id){
+                    var validasi = confirm("Apakah anda yakin akan menghapus data ini?");
+                    if(validasi){
+                        $.ajax({
+                            type: "GET",
+                            data: "id="+id,
+                            url : 'delete.php',
+                            success: 'index.php';
+                        })
+                    }
+                    }
+                </script>
+                <h2><?php echo $experience ?></h2>
+                <hr size="1px" width="590px">
+                <ul style="line-height: 50px;">
+                <?php
+                $getdata = mysqli_query($connect, "SELECT * FROM experience order by exp1 desc");
+                while($a=mysqli_fetch_array($getdata)){
+                ?>
+                    <?php echo $a['exp1'] ?> <br/>
+                    <?php echo $a['exp2'] ?> <br/>
+
+                <?php
+                }
+                ?>
+                </ul>      
+
+            </div>
+        </div>
     </body>
 </html>

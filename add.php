@@ -1,62 +1,87 @@
 <html>
 <head>
-    <title>Tambah Barang</title>
+    <title>Tambah Riwayat Pendidikan</title>
 </head>
 
 <body>
-    <a href="Index.php">Kembali ke Beranda</a>
+    <a href="index.php">Kembali</a>
     <br/><br/>
 
     <form action="add.php" method="post" name="form1">
         <table width="25%" border="0">
             <tr>
-                <td>SKU</td>
-                <td><input type="text" name="sku"></td>
+                <td>SD</td>
+                <td><input type="text" name="sd"></td>
             </tr>
             <tr>
-                <td>Nama Barang</td>
-                <td><input type="text" name="nama_barang"></td>
+                <td>SMP</td>
+                <td><input type="text" name="smp"></td>
             </tr>
             <tr>
-                <td>Kategori</td>
-                <td><select class="custom-select" name="kategori" required="required">
-                    <option value="">pilih salah satu</option>
-                    <option value="MAKANAN">Makanan</option>
-                    <option value="MINUMAN">Minuman</option>
-                    <option value="ATK">ATK</option>
-                    </select>
-                </td>                
+                <td>SMA</td>
+                <td><input type="text" name="sma"></td>
             </tr>
             <tr>
-                <td>Jumlah Stok</td>
-                <td><input type="text" name="jumlah_stok"></td>
-            </tr>
-            <tr>
-                <td>Harga Satuan</td>
-                <td><input type="text" name="harga_satuan"></td>
+                <td>KULIAH</td>
+                <td><input type="text" name="kuliah"></td>
             </tr>
             <tr>
                 <td></td>
-                <td><input type="submit" name="Submit" value="Simpan"></td>
+                <td><button onclick="add()">Simpan</button></td>
             </tr>
         </table>
+        <p id="pesan"></p>
     </form>
 
     <?php
+    error_reporting(0);
+    
+        $sd = $_POST['sd'];
+        $smp = $_POST['smp'];
+        $sma = $_POST['sma'];
+        $kuliah = $_POST['kuliah'];
+        $result['pesan']="";
 
-    if(isset($_POST['Submit'])) {
-        $sku = $_POST['sku'];
-        $nama_barang = $_POST['nama_barang'];
-        $kategori = $_POST['kategori'];
-        $jumlah_stok = $_POST['jumlah_stok'];
-        $harga_satuan = $_POST['harga_satuan'];
+        include_once("conn.php");
 
-        include_once("config.php");
+        if($sd==""){
+            $result['pesan'] = "Kolom SD harus diisi"; 
+        }elseif($smp==""){
+            $result['pesan'] = "Kolom SMP harus diisi"; 
+        }elseif($sma==""){
+            $result['pesan'] = "Kolom SMA harus diisi"; 
+        }elseif($kuliah==""){
+            $result['pesan'] = "Kolom KULIAH harus diisi"; 
+        }else{
+            $addResult = mysqli_query($connect, "INSERT INTO education(sd, smp, sma, kuliah) VALUES('$sd','$smp','$sma','$kuliah')");
+        }
 
-        $result = mysqli_query($mysqli, "INSERT INTO barang(sku, nama_barang, kategori, jumlah_stok, harga_satuan) VALUES('$sku','$nama_barang','$kategori','$jumlah_stok','$harga_satuan')");
-
-        echo "Barang telah berhasil ditambahkan. <a href='index.php'>Cek Barang</a>";
-    }
+        if($addResult){
+            $result['pesan'] = "Riwayat Pendidikan telah berhasil ditambahkan. <a href='index.php'>Cek Hasil</a>";
+        }else{
+            $result['pesan'] = "Riwayat Pendidikan gagal ditambahkan"; 
+        }
+    echo json_encode($result);
     ?>
+
+    <script type="text/javascript">
+
+    function add(){
+        var sd = $("[name='sd']").val():
+        var smp = $("[name='smp']").val():
+        var sma = $("[name='sma']").val():
+        var kuliah = $("[name='kuliah']").val():
+    }
+            $.ajax({
+                type: "POST",
+                data: "sd="+sd+"&smp="+smp+"&sma="+sma+"&kuliah="+kuliah,
+                url : 'add.php',
+                success : function(result){
+                    var pecahData=JSON.parse(result);
+                    $.(#pesan).html(pecahData.pesan);
+                }
+            });
+    </script>
+
     </body>
     </html>
